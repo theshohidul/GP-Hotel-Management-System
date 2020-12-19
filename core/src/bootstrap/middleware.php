@@ -14,14 +14,13 @@ return function (App $app)
 {
     $config = $app->getContainer()->get(\App\Utility\Config::class);
     $settings = $config->get('app');
-    $log = $app->getContainer()->get(\App\Service\Logger\Log::class);
+    $log = $app->getContainer()->get(\App\Utility\Logger\Log::class);
     $serverRequestCreator = ServerRequestCreatorFactory::create();
     $request = $serverRequestCreator->createServerRequestFromGlobals();
 
     // log request related data
     $log->set('request', [
         'start_at' => APP_START_TIME,
-        'request_id' => REQUEST_UUID,
         'headers' => $request->getHeaders(),
         'query' => $request->getQueryParams()
     ], 'request');

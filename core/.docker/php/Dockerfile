@@ -11,4 +11,9 @@ WORKDIR /var/www/html
 RUN curl -sS https://getcomposer.org/installer | \
 php -- --install-dir=/usr/bin/ --filename=composer --version=2.0.8
 
+
+RUN pecl install redis \
+&& docker-php-ext-enable redis
+
+
 ENV COMPOSER_ALLOW_SUPERUSER=1

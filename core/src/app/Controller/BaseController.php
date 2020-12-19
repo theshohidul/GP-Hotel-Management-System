@@ -4,7 +4,7 @@
 namespace App\Controller;
 
 
-use App\Service\Logger\Log;
+use App\Utility\Logger\Log;
 use Psr\Container\ContainerInterface;
 use Slim\Psr7\Response;
 

@@ -21,7 +21,6 @@ class CacheMiddleware
         $response = $handler->handle($request);
         if (!$response->hasHeader('Cache-Control'))
             $response = $response->withHeader('Cache-Control', 'max-age=2');
-        //$response->getBody()->write('AFTER');
         return $response;
     }
 }

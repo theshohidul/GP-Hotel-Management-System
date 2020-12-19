@@ -11,7 +11,12 @@ abstract class AbstractDTO
         foreach ($class->getProperties(\ReflectionProperty::IS_PUBLIC) as $reflectionProperty) {
             $property = $reflectionProperty->getName();
             if (isset($parameters[$property]))
+            {
                 $this->{$property} = $parameters[$property];
+            }else
+            {
+                $this->{$property} = NULL;
+            }
         }
     }
 

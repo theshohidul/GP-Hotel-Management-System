@@ -1,6 +1,7 @@
 <?php
 
-use App\Service\Logger\Log;
+use App\Utility\Logger\Log;
+use App\Utility\Cache\Cache;
 use App\Utility\Config;
 use App\Utility\User\Device;
 use DI\ContainerBuilder;
@@ -48,11 +49,7 @@ return function (ContainerBuilder $containerBuilder) {
             $defaultConnection = $config->get('database.default');
             $dbSettings = $config->get('database.connections.' . $defaultConnection);
 
-            $medoo = new Medoo();
-
-            $medoo->attach($c->get(\App\Repository\BaseRepository::class));
-
-            $medoo->connect([
+            return new Medoo([
                 'database_type' => $dbSettings['type'],
                 'database_name' => $dbSettings['dbname'],
                 'server' => $dbSettings['host'],
@@ -60,8 +57,6 @@ return function (ContainerBuilder $containerBuilder) {
                 'username' => $dbSettings['user'],
                 'password' => $dbSettings['password'],
             ]);
-
-            return $medoo;
         }
     ]);
 
@@ -95,17 +90,25 @@ return function (ContainerBuilder $containerBuilder) {
     ]);
 
     $containerBuilder->addDefinitions([
-       Log::class => function(ContainerInterface $c){
+        Log::class => function(ContainerInterface $c){
 
-           $serverRequestCreator = ServerRequestCreatorFactory::create();
-           $request = $serverRequestCreator->createServerRequestFromGlobals();
-           $config = $c->get(Config::class);
-           $device = $c->get(Device::class);
+            $serverRequestCreator = ServerRequestCreatorFactory::create();
+            $request = $serverRequestCreator->createServerRequestFromGlobals();
+            $config = $c->get(Config::class);
+            $device = $c->get(Device::class);
 
-           return new Log($config, $request, $device);
-       },
+            return new Log($config, $request, $device);
+        },
 
     ]);
 
+    $containerBuilder->addDefinitions([
+        Cache::class => function(ContainerInterface $c) {
+            $config = $c->get(Config::class);
+            $cacheConfig = $config->get('cache');
+            $log = $c->get(Log::class);
 
+            return (new Cache($cacheConfig, $log));
+        }
+    ]);
 };

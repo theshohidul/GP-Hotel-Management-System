@@ -1,29 +1,51 @@
-# README #
+# GP - Hotel Management System
 
-This README would normally document whatever steps are necessary to get your application up and running.
+## Requirements
 
-### What is this repository for? ###
+- Docker
+- Docker Compose
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+## Configure
 
-### How do I get set up? ###
+After cloning the project goto `project_dir/core/src` and run these commands
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+##### Copy env example
 
-### Contribution guidelines ###
+```bash
+cp .env.example .env
+```
 
-* Writing tests
-* Code review
-* Other guidelines
+Set your desired value in `.env` if you need
 
-### Who do I talk to? ###
+##### Copy docker compose file
 
-* Repo owner or admin
-* Other community or team contact
+```bash
+cp docker-compose.yaml.example docker-compose.yaml
+```
+
+## Run project
+
+To run this project please run the command bellow from `project_dir/core`
+
+```bash
+docker-compose --env-file=./src/.env up -d --build
+```
+
+## Install PHP Dependencies
+
+After docker run successfully you have to install PHP dependencies by running these command
+
+```bash
+docker-compose exec app composer install
+```
+
+## Down
+
+To stop all containers of docker please run this command
+
+```bash
+docker-compose --env-file=./src/.env down
+```
+
+
+Congratulations! You have successfully done configurations. We hope now this project will run properly from this URL `http://localhost:${APP_PORT}`

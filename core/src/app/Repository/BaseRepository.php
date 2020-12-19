@@ -4,7 +4,7 @@
 namespace App\Repository;
 
 
-use App\Service\Logger\Log;
+use App\Utility\Logger\Log;
 use Medoo\Medoo;
 use SplSubject;
 

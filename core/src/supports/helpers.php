@@ -129,3 +129,10 @@ if (!function_exists('route_path')) {
         return $basePath . ltrim($path, '\/');
     }
 }
+
+if (!function_exists('env')) {
+    function env(string $name, $default = null)
+    {
+        return $_ENV[$name] ?? $default;
+    }
+}
