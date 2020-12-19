@@ -1,0 +1,56 @@
+version: '3'
+networks:
+  slim: null
+
+services:
+  nginx:
+    image: 'nginx:stable-alpine'
+    container_name: wom_core_nginx
+    ports:
+      - ${APP_PORT}:80
+    volumes:
+      - './.docker/nginx/default.conf:/etc/nginx/conf.d/default.conf'
+      - ./src:/var/www/html
+    depends_on:
+      - app
+    networks:
+      - slim
+
+  postgres:
+    image: 'postgres:alpine'
+    container_name: wom_core_postgres
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+    volumes:
+      - './.docker/postgres/:/docker-entrypoint-initdb.d/'
+      - ~/backup/wom/postgress:/var/lib/postgresql/data
+    networks:
+      - slim
+
+  redis:
+    image: "redis:latest"
+    container_name: wom_core_redis
+    volumes:
+      - ~/backup/wom/redis:/data
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    ports:
+      - 6379
+    networks:
+      - slim
+
+  app:
+    build:
+      context: .
+      dockerfile: ./.docker/php/Dockerfile
+    container_name: wom_core_app
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - 9000
+    networks:
+      - slim
