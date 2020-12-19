@@ -4,6 +4,15 @@
 
 - Docker
 - Docker Compose
+- You will find DB schema in `project_dir/.docker/postgres/init.sql`
+- Postgres database is used in this project
+
+## Description
+- I have used Slim Micro-framework for this project
+- I have used repository design pattern in this project
+- I have used Monolog for logging purpose (May required write permission in project_dir/core/src/storage folder to store log)
+- I have used Redis Stash package for caching purpose
+- I have used Medoo as a pdo library
 
 ## Configure
 
